@@ -1,6 +1,7 @@
 import React,{useRef, useState,useEffect} from 'react'
 import { MapContainer, TileLayer, Marker, Popup,useMapEvents} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import * as L from 'leaflet'
 import chestData from '../../chests';
 
 function MapExample(props) {
@@ -9,6 +10,18 @@ function MapExample(props) {
         lng: 36.15943908691407,
         zoom: 6.3,
         })
+
+
+    //chest image for marker  
+    var myIcon = L.icon({
+      iconUrl: 'https://www.freepnglogos.com/uploads/treasure-chest-png/treasure-chest-png-images-transparent-download-19.png',
+      iconSize: [65, 70],
+      iconAnchor: [22, 94],
+      popupAnchor: [-3, -76],
+      
+  });
+  
+     
     
 
     let mainPointCoord = chestData.filter(chests => chests.name === props.selected).map(city => city.coords)[0]
@@ -30,7 +43,7 @@ function MapExample(props) {
     const closestPoints=closestPointstt[0]    
 
     const showClosestPoints = closestPoints.map(positions => {
-      return (<Marker key={positions.key} position={[positions.lat,positions.lon]}>
+      return (<Marker key={positions.key} icon={myIcon} position={[positions.lat,positions.lon]}>
                 <Popup>Current location: <pre>{JSON.stringify([positions.lat,positions.lon], null, 2)}</pre></Popup>
               </Marker>)
     })
@@ -43,6 +56,7 @@ function MapExample(props) {
             const marker = markerRef.current
             if (marker) {
                 marker.openPopup()
+                
             }
         }
 
